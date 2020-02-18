@@ -9,8 +9,6 @@ pipeline {
    stages {
       stage('Build') {
          steps {
-            // Get some code from a GitHub repository
-            git 'https://github.com/jfsaaved/hello-world-jenkins-pipeline.git'
 
             // Run Maven on a Unix agent.
             sh "mvn -DskipTests clean package"
