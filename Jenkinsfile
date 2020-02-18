@@ -2,21 +2,21 @@ pipeline {
    agent any
 
    tools {
-      // Install the Maven version configured as "M3" and add it to the path.
       maven "M3"
    }
 
    stages {
       stage('Build') {
          steps {
-
-            // Run Maven on a Unix agent.
             sh "mvn -DskipTests clean package"
-
-            // To run Maven on a Windows agent, use
-            // bat "mvn -Dmaven.test.failure.ignore=true clean package"
          }
-
+      }
+      stage('Deploy') {
+         steps {
+            sh "cf login -a ${CF_API_URL} -u ${CF_USERNAME} -p ${CF_PASSWORD} -o ${CF_ORG} -s ${CF_SPACE}"
+            sh "cf push pipeline-test -p target/pipeline-0.0.1-SNAPSHOT.jar"
+         }
       }
    }
+
 }
